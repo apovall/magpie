@@ -140,7 +140,6 @@
         <b>
           <span id="readlock">Readlock Enabled</span> | <span id="writelock">Writelock Enabled</span>
         </b>
-
       </div>
       <input id="command" type="text" for="command">
       <button onclick="writeData()">Send command</button>
@@ -305,7 +304,7 @@
 
     async function writeData(manualCmd = null) {
       // Get data from input, unsanitised
-      appendNewDataRow(['Use Command Event'], 'write')
+      appendNewDataRow(['User Command Event'], 'write')
       const cmdElement = document.getElementById("command")
       let command = cmdElement.value
       if (command == null || command == "") {

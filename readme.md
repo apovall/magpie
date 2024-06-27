@@ -11,6 +11,7 @@ It's not an earth shattering invention, but will hopefully save you a bit of has
 
 
 ## TODO:
+- Support for closing the port if the device is physically disconnected.
 - Look at better minifiers, such as [minify-html](https://github.com/wilsonzlin/minify-html)
 - Tidy up code to be less verbose
 - Incorporate build tools to do minification step in this repo.

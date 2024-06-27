@@ -16,6 +16,7 @@
       <![endif]-->
   <section class="introduction">
     <h1>[Customisable Heading]</h1>
+    <p>[customisable paragraph to provide additional information to users]</p>
     <h4 id="support_availability">
       <span class="checkmark">
         <div class="checkmark_stem"></div>
@@ -23,7 +24,6 @@
       </span>
       Serial comms support available
     </h4>
-    <p>[customisable paragraph to provide additional information to users]</p>
     <div>
       <h4 id="support_caption">If you received this warning, please try a supported browser:</h4>
       <table id="support_list">
@@ -136,11 +136,6 @@
     </div>
     <hr>
     <div class="control_buttons">
-      <div class="control_buttons">
-        <b>
-          <span id="readlock">Readlock Enabled</span> | <span id="writelock">Writelock Enabled</span>
-        </b>
-      </div>
       <input id="command" type="text" for="command">
       <button onclick="writeData()">Send command</button>
     </div>
@@ -237,22 +232,6 @@
       console.log(port.getInfo())
     }
 
-    function indicateLockStatuses() {
-      const readLock = document.getElementById('readlock')
-      const writeLock = document.getElementById('writelock')
-
-      readLock.style.color = "Black"
-      writeLock.style.color = "Black"
-
-      if (port.readable !== null || port.readable.locked == true) {
-        readLock.style.color = "Red"
-      }
-
-      if (port.writable !== null || port.writable.locked == true) {
-        writeLock.style.color = "Red"
-      }
-    }
-
     async function readSerial() {
       let textStream = ""
 
@@ -260,7 +239,6 @@
       //   console.log("port.readable", port.readable)
       try {
         while (true) {
-          indicateLockStatuses()
           const { value, done } = await reader.read()
 
           if (done) {
@@ -327,7 +305,6 @@
       writer.close()
       await writableStreamClosed;
       await port.close()
-      indicateLockStatuses()
     }
 
   </script>

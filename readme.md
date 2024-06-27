@@ -12,7 +12,8 @@ It's not an earth shattering invention, but will hopefully save you a bit of has
 
 ## TODO:
 - Support for closing the port if the device is physically disconnected.
-- Remove read and write lock feedback.
+  - [disconnect event](https://developer.mozilla.org/en-US/docs/Web/API/SerialPort/disconnect_event)
+- [x] Remove read and write lock feedback.
 - Look at better minifiers, such as [minify-html](https://github.com/wilsonzlin/minify-html)
 - Tidy up code to be less verbose
-- Incorporate build tools to do minification step in this repo.
+- Incorporate build tools to do minification step in repo.

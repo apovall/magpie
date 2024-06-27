@@ -12,8 +12,8 @@
 
 <body>
   <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+      <![endif]-->
   <section class="introduction">
     <h1>[Customisable Heading]</h1>
     <h4 id="support_availability">
@@ -100,6 +100,7 @@
 
   <section id="config">
     <h3>Connection Configuration</h3>
+    <p>Configuration is saved on change.</p>
     <div>
       <label for="baud_rate">Baud Rate:</label>
       <select name="baud_rate" id="baud_rate" onchange="selectBaudRate()">
@@ -126,21 +127,20 @@
   </section>
 
   <section id="control"">
-    <div>
-      <h3>Commands list</h3>
-      <div class="control_buttons">
-        <button onclick="initialConnectAndRead()">Connect to serial</button>
-        <button onclick="disconnectFromSerial()">Disconnect from serial</button>
-        <button onclick="checkPortInfo()">Get Port Info</button>
-      </div>
+      <div>
+        <h3>Commands list</h3>
+        <div class=" control_buttons">
+    <button id="connectSerialBtn" onclick="initialConnectAndRead()">Connect</button>
+    <button id="disableSerialBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
+    </div>
     </div>
     <hr>
     <div class="control_buttons">
       <div class="control_buttons">
-        <b> 
-          <span id="readlock">Read Lock</span> | <span id="writelock">Write Lock</span>
+        <b>
+          <span id="readlock">Readlock Enabled</span> | <span id="writelock">Writelock Enabled</span>
         </b>
-        
+
       </div>
       <input id="command" type="text" for="command">
       <button onclick="writeData()">Send command</button>
@@ -204,6 +204,20 @@
 
     async function initialConnectAndRead() {
       await connectToSerialPort()
+
+      const textEncoder = new TextEncoderStream();
+      writableStreamClosed = textEncoder.readable.pipeTo(port.writable)
+      writer = textEncoder.writable.getWriter()
+
+      const textDecoder = new TextDecoderStream()
+      readableStreamClosed = port.readable.pipeTo(textDecoder.writable)
+      // const reader = textDecoder.readable.getReader()
+      reader = textDecoder.readable.getReader()
+      // const reader = port.readable.getReader()
+
+      document.getElementById("disableSerialBtn").disabled = false
+      document.getElementById("connectSerialBtn").disabled = true
+
       await readSerial()
     }
 
@@ -213,6 +227,7 @@
         // Request a port and open a connection
         port = await navigator.serial.requestPort();
         await port.open({ baudRate: baudRate, dataBits: 8, parity: "none", stopBits: 1 });
+        appendNewDataRow(['Connect Event'], 'write')
 
       } catch (error) {
         console.error('There was an error opening the serial port:', error);
@@ -227,55 +242,51 @@
       const readLock = document.getElementById('readlock')
       const writeLock = document.getElementById('writelock')
 
-      port.readable.locked ? readLock.style.color = "Red" : readLock.style.color = "Green"
-      port.writable.locked ? writeLock.style.color = "Red" : writeLock.style.color = "Green"
+      readLock.style.color = "Black"
+      writeLock.style.color = "Black"
 
+      if (port.readable !== null || port.readable.locked == true) {
+        readLock.style.color = "Red"
+      }
+
+      if (port.writable !== null || port.writable.locked == true) {
+        writeLock.style.color = "Red"
+      }
     }
 
     async function readSerial() {
       let textStream = ""
 
-      while (port.readable) {
-        const textDecoder = new TextDecoderStream()
-        readableStreamClosed = port.readable.pipeTo(textDecoder.writable)
-        // const reader = textDecoder.readable.getReader()
-        reader = textDecoder.readable.getReader()
-        // const reader = port.readable.getReader()
-        
-        try {
-          while (true) {
-            indicateLockStatuses()
-            const { value, done } = await reader.read()
-            let tbody = document.getElementById('serial_output_tbody')
+      // while (port.readable) {
+      //   console.log("port.readable", port.readable)
+      try {
+        while (true) {
+          indicateLockStatuses()
+          const { value, done } = await reader.read()
 
-            if (done) {
-              console.log('====> in here, releasing lock')
-              reader.releaseLock()
-              break
-            }
-
-            if (value) {
-              textStream += value;
-              if (textStream.includes('\u0004\u0003')) {
-                console.log('EoT found')
-              }
-              let lines = textStream.split("\n");
-              textStream = lines.pop(); // keep the last partial line
-              // appendNewDataRow(tbody, lines)
-              appendNewDataRow(tbody, lines)
-            }
+          if (done) {
+            reader.releaseLock()
+            break
           }
-        } catch (error) {
-          // TODO: Non-fatal error handling
-          console.log("Error: ", error)
+
+          if (value) {
+            textStream += value;
+            let lines = textStream.split("\n");
+            textStream = lines.pop(); // keep the last partial line
+            appendNewDataRow(lines)
+          }
         }
+      } catch (error) {
+        console.log("Error: ", error)
       }
+      // }
     }
 
-    function appendNewDataRow(tbody, lines) {
+    function appendNewDataRow(lines, appendType = 'read') {
       // Update to:
-        // Insert any commands issued into the table
-        // Change the background of tr if it's a command that's issued
+      // Insert any commands issued into the table
+      // Change the background of tr if it's a command that's issued
+      let tbody = document.getElementById('serial_output_tbody')
       for (let line of lines) {
         let tr = document.createElement('tr')
         let td1 = document.createElement('td')
@@ -285,47 +296,63 @@
         td2.textContent = line
         tr.appendChild(td1)
         tr.appendChild(td2)
+        if (appendType == 'write') {
+          tr.id = "commandHighlight"
+        }
         tbody.appendChild(tr);
       }
     }
 
-    async function writeData() {
-
-      // reader.releaseLock()
-      // reader.cancel()
-      // await readableStreamClosed.catch((error) => {
-      //   console.log('closed', error)
-      // })
-
+    async function writeData(manualCmd = null) {
       // Get data from input, unsanitised
+      appendNewDataRow(['Use Command Event'], 'write')
       const cmdElement = document.getElementById("command")
       let command = cmdElement.value
       if (command == null || command == "") {
         return
       }
-      // Reset field for next input
+      // Reset field for next user input
       cmdElement.value = ""
 
-      const textEncoder = new TextEncoderStream();
-      const writableStreamClosed = textEncoder.readable.pipeTo(port.writable)
-      const writer = textEncoder.writable.getWriter()
+      writer.write(command + `${cmdTerminator}`)
 
-      writer.write(command + `${cmdTerminator}`).then(() => {
-        writer.releaseLock()
-        console.log('released write lock');
-      }).then(() => {
-        indicateLockStatuses()
-        console.log("updated status")
-      })
-      // console.log('writableStreamClosed', writableStreamClosed);
-      // await writableStreamClosed
+    }
 
+    async function disconnectSerial() {
+      appendNewDataRow(['Disconnect Event'], 'write')
+      document.getElementById("connectSerialBtn").disabled = false
+      document.getElementById("disableSerialBtn").disabled = true
+      reader.cancel()
+      await readableStreamClosed.catch(() => { /* Ignore the error */ });
+      writer.close()
+      await writableStreamClosed;
+      await port.close()
+      indicateLockStatuses()
     }
 
   </script>
   <style>
     body {
       margin: 40px;
+      font-family: optima, sans serif;
+    }
+
+    /* Serial output table */
+    #serial_output_tbody>tr>td {
+      text-align: left;
+    }
+
+    #commandHighlight {
+      background-color: rgb(156, 218, 220);
+    }
+
+    #unsupported_browser {
+      background-color: rgb(255, 215, 215);
+    }
+
+    #output {
+      max-height: 600px;
+      overflow-y: scroll;
     }
 
     #support_availability {
@@ -373,26 +400,12 @@
       background-color: rgb(237 238 242);
     }
 
-    #unsupported_browser {
-      background-color: rgb(255, 215, 215);
-    }
-
     tfoot th {
       text-align: right;
     }
 
     tfoot td {
       font-weight: bold;
-    }
-
-    /* Serial output table */
-    #serial_output_tbody>tr>td {
-      text-align: left;
-    }
-
-    #output {
-      max-height: 600px;
-      overflow-y: scroll;
     }
 
     /* Inline checkmark */

@@ -8,3 +8,9 @@ Magpie allows users to:
 - Do a shared video call while you guide them through it.
 
 It's not an earth shattering invention, but will hopefully save you a bit of hassle with troubleshooting end user problems.
+
+
+## TODO:
+- Look at better minifiers, such as [minify-html](https://github.com/wilsonzlin/minify-html)
+- Tidy up code to be less verbose
+- Incorporate build tools to do minification step in this repo.

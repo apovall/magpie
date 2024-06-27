@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
 
 <head>
@@ -118,19 +114,37 @@
         <option value="921600">921600</option>
       </select>
     </div>
+    <div>
+      <label for="cmdTerminator">Command Terminator</label>
+      <select name="cmdTerminator" id="cmdTerminator" onchange="selectCmdTerminator()">
+        <option value="\n">\n</option>
+        <option value="\r">\r</option>
+        <option value="\r\n">\r\n</option>
+      </select>
+    </div>
     <hr>
   </section>
 
   <section id="control"">
     <div>
       <h3>Commands list</h3>
-      <div class=" control_buttons">
-    <button onclick="connectToSerialPort()">Connect to serial</button>
-    <button onclick="disconnectFromSerial()">Disconnect from serial</button>
-    <button onclick="sendData()">Send Boot Command</button>
-    </div>
+      <div class="control_buttons">
+        <button onclick="initialConnectAndRead()">Connect to serial</button>
+        <button onclick="disconnectFromSerial()">Disconnect from serial</button>
+        <button onclick="checkPortInfo()">Get Port Info</button>
+      </div>
     </div>
     <hr>
+    <div class="control_buttons">
+      <div class="control_buttons">
+        <b> 
+          <span id="readlock">Read Lock</span> | <span id="writelock">Write Lock</span>
+        </b>
+        
+      </div>
+      <input id="command" type="text" for="command">
+      <button onclick="writeData()">Send command</button>
+    </div>
   </section>
 
   <section id="output">
@@ -154,14 +168,23 @@
 
   <script type="text/javascript">
     let port;
-    let closeConnection = false;
-    let canCloseConnection = false;
-    let baudRate = 115200; //default
+    let reader;
+    let writer;
+    let readableStreamClosed;
+    let writableStreamClosed;
+
+    let baudRate = 115200; // default
+    let cmdTerminator = "\n"; // default
 
     checkSerialSupport()
 
     function selectBaudRate() {
       baudRate = document.getElementById("baud_rate").value
+    }
+
+    function selectCmdTerminator() {
+      cmdTerminator = document.getElementById("cmdTerminator").value
+      console.log(`command terminator is ${cmdTerminator}`)
     }
 
     function checkSerialSupport() {
@@ -178,6 +201,12 @@
         document.getElementById("output").innerHTML = ""
       }
     }
+
+    async function initialConnectAndRead() {
+      await connectToSerialPort()
+      await readSerial()
+    }
+
     // Function to connect to the serial port
     async function connectToSerialPort() {
       try {
@@ -185,89 +214,112 @@
         port = await navigator.serial.requestPort();
         await port.open({ baudRate: baudRate, dataBits: 8, parity: "none", stopBits: 1 });
 
-        // const reader = port.readable.getReader();
-        const textDecoder = new TextDecoderStream()
-        const readableStreamClosed = port.readable.pipeTo(textDecoder.writable)
-        const reader = textDecoder.readable.getReader();
-
-        // while (port.readable) {
-          let textStream = ""
-          try {
-            while (true) {
-              const { value, done } = await reader.read();
-              // let output_div = document.getElementById('serial_output')
-              let tbody = document.getElementById('serial_output_tbody')
-              if (done || closeConnection) {
-                // Allow the serial port to be closed later.
-                console.log('releasing reader lock')
-                reader.releaseLock();
-                closeConnection = true
-                break;
-              }
-              if (value) {
-                textStream += value;
-                let lines = textStream.split("\n");
-                textStream = lines.pop(); // keep the last partial line
-                // appendNewDataRow(tbody, lines)
-                appendNewDataRow(tbody, lines)
-              }
-            }
-          } catch (error) {
-            // TODO: Handle non-fatal read error.
-            console.log(error)
-          }
-        // }
       } catch (error) {
         console.error('There was an error opening the serial port:', error);
       }
-      
-      console.log("in here")
-      const textEncoder = new TextEncoderStream();
-      const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
-      console.log('reader.cancel();')
-      reader.cancel();
-      await readableStreamClosed.catch(() => { /* Ignore the error */ });
+    }
 
-      console.log("writer.close();")
-      writer.close();
-      await writableStreamClosed;
+    function checkPortInfo() {
+      console.log(port.getInfo())
+    }
 
-      await port.close();
+    function indicateLockStatuses() {
+      const readLock = document.getElementById('readlock')
+      const writeLock = document.getElementById('writelock')
+
+      port.readable.locked ? readLock.style.color = "Red" : readLock.style.color = "Green"
+      port.writable.locked ? writeLock.style.color = "Red" : writeLock.style.color = "Green"
 
     }
 
+    async function readSerial() {
+      let textStream = ""
+
+      while (port.readable) {
+        const textDecoder = new TextDecoderStream()
+        readableStreamClosed = port.readable.pipeTo(textDecoder.writable)
+        // const reader = textDecoder.readable.getReader()
+        reader = textDecoder.readable.getReader()
+        // const reader = port.readable.getReader()
+        
+        try {
+          while (true) {
+            indicateLockStatuses()
+            const { value, done } = await reader.read()
+            let tbody = document.getElementById('serial_output_tbody')
+
+            if (done) {
+              console.log('====> in here, releasing lock')
+              reader.releaseLock()
+              break
+            }
+
+            if (value) {
+              textStream += value;
+              if (textStream.includes('\u0004\u0003')) {
+                console.log('EoT found')
+              }
+              let lines = textStream.split("\n");
+              textStream = lines.pop(); // keep the last partial line
+              // appendNewDataRow(tbody, lines)
+              appendNewDataRow(tbody, lines)
+            }
+          }
+        } catch (error) {
+          // TODO: Non-fatal error handling
+          console.log("Error: ", error)
+        }
+      }
+    }
+
     function appendNewDataRow(tbody, lines) {
+      // Update to:
+        // Insert any commands issued into the table
+        // Change the background of tr if it's a command that's issued
       for (let line of lines) {
-        // let pTag = document.createElement('p');
         let tr = document.createElement('tr')
         let td1 = document.createElement('td')
         let td2 = document.createElement('td')
         date = new Date().toLocaleTimeString("en-US", { weekday: "short", year: "numeric", month: "numeric", day: "numeric" })
         td1.textContent = date
         td2.textContent = line
-        // pTag.textContent = line;
         tr.appendChild(td1)
         tr.appendChild(td2)
         tbody.appendChild(tr);
       }
     }
 
-    async function sendData() {
-      const data = "boot";
-      const encoder = new TextEncoder();
-      const writer = port.writable.getWriter();
-      await writer.write(encoder.encode(data));
-      writer.releaseLock();
-    }
+    async function writeData() {
 
-    async function disconnectFromSerial() {
-      closeConnection = true
-      // await port.close()
-      // reader.releaseLock();
-      // enableRead = false
-      // port.close().then(() => {
-      //   console.log('port closed')
+      // reader.releaseLock()
+      // reader.cancel()
+      // await readableStreamClosed.catch((error) => {
+      //   console.log('closed', error)
       // })
+
+      // Get data from input, unsanitised
+      const cmdElement = document.getElementById("command")
+      let command = cmdElement.value
+      if (command == null || command == "") {
+        return
+      }
+      // Reset field for next input
+      cmdElement.value = ""
+
+      const textEncoder = new TextEncoderStream();
+      const writableStreamClosed = textEncoder.readable.pipeTo(port.writable)
+      const writer = textEncoder.writable.getWriter()
+
+      writer.write(command + `${cmdTerminator}`).then(() => {
+        writer.releaseLock()
+        console.log('released write lock');
+      }).then(() => {
+        indicateLockStatuses()
+        console.log("updated status")
+      })
+      // console.log('writableStreamClosed', writableStreamClosed);
+      // await writableStreamClosed
+
     }
 
   </script>

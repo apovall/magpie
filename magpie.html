@@ -17,6 +17,7 @@
   <section class="introduction">
     <h1>[Customisable Heading]</h1>
     <p>[customisable paragraph to provide additional information to users]</p>
+    <a href="mailto:alan@alan.povall.com?bcc=lemon@3rdrock.com&subject=apples and oranges">Contact Email</a>
     <h4 id="support_availability">
       <span class="checkmark">
         <div class="checkmark_stem"></div>
@@ -132,6 +133,10 @@
         <div class=" control_buttons">
     <button id="connectSerialBtn" onclick="initialConnectAndRead()">Connect</button>
     <button id="disableSerialBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
+    <!-- <button id="disableSerialBtn" onclick="emailSerialOutput()" >
+
+    </button> -->
+    <a href="mailto:" >Email Output</a>
     </div>
     </div>
     <hr>
@@ -228,15 +233,8 @@
       }
     }
 
-    function checkPortInfo() {
-      console.log(port.getInfo())
-    }
-
     async function readSerial() {
       let textStream = ""
-
-      // while (port.readable) {
-      //   console.log("port.readable", port.readable)
       try {
         while (true) {
           const { value, done } = await reader.read()
@@ -249,20 +247,16 @@
           if (value) {
             textStream += value;
             let lines = textStream.split("\n");
-            textStream = lines.pop(); // keep the last partial line
+            textStream = lines.pop();
             appendNewDataRow(lines)
           }
         }
       } catch (error) {
         console.log("Error: ", error)
       }
-      // }
     }
 
     function appendNewDataRow(lines, appendType = 'read') {
-      // Update to:
-      // Insert any commands issued into the table
-      // Change the background of tr if it's a command that's issued
       let tbody = document.getElementById('serial_output_tbody')
       for (let line of lines) {
         let tr = document.createElement('tr')
@@ -281,19 +275,14 @@
     }
 
     async function writeData(manualCmd = null) {
-      // Get data from input, unsanitised
-      // appendNewDataRow(['User Command Event'], 'write')
       const cmdElement = document.getElementById("command")
       let command = cmdElement.value
       if (command == null || command == "") {
         return
       }
-      // Reset field for next user input
       appendNewDataRow([command], 'write')
       cmdElement.value = ""
-
       writer.write(command + `${cmdTerminator}`)
-
     }
 
     async function disconnectSerial() {

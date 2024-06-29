@@ -9,16 +9,18 @@ Magpie allows users to:
 
 It's not an earth shattering invention, but will hopefully save you a bit of hassle with troubleshooting end user problems.
 
+# Resources
+- [Manual basic minifier](https://www.minifier.org/html-minifier)
 
 ## TODO:
-- Support for closing the port if the device is physically disconnected.
-  - [disconnect event](https://developer.mozilla.org/en-US/docs/Web/API/SerialPort/disconnect_event)
-- [x] Remove read and write lock feedback.
+- [] Incorporate `devConfig` into HTML
 - [] Look at better minifiers, such as [minify-html](https://github.com/wilsonzlin/minify-html)
 - [] Tidy up code to be less verbose
 - [] Incorporate build tools to do minification step in repo.
-- [] Incorporate `devConfig` into HTML
-- [x] Add ability to email serial output to developer
-- [x] Improved basic styling
 - [] Add more styling options for end users. 
 - [] Use flexbox for baud rate and command terminator options
+- [x] Support for closing the port if the device is physically disconnected.
+  - [disconnect event](https://developer.mozilla.org/en-US/docs/Web/API/SerialPort/disconnect_event)
+- [x] Remove read and write lock feedback.
+- [x] Improved basic styling
+- [x] Add ability to email serial output to developer

@@ -171,7 +171,7 @@
     const devConfig = {
       name: "John Example",
       email: "example@example.com",
-      deviceName: "IMX8 Carriage Return",
+      deviceName: "IMX8 Falke V2.2",
       deviceDetais: "[customisable paragraph to provide additional information to users]"
     }
 
@@ -187,6 +187,9 @@
 
     setDevInfo()
     checkSerialSupport()
+    addEventListener('disconnnect', () => {
+      disconnectSerial()
+    })
 
     function setDevInfo() {
       const mailtoElement = document.getElementById('mailto_dev')
@@ -267,6 +270,7 @@
             textStream = lines.pop();
             appendNewDataRow(lines)
           }
+
         }
       } catch (error) {
         console.log("Error: ", error)

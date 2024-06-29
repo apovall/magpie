@@ -21,3 +21,4 @@ It's not an earth shattering invention, but will hopefully save you a bit of has
 - [x] Add ability to email serial output to developer
 - [x] Improved basic styling
 - [] Add more styling options for end users. 
+- [] Use flexbox for baud rate and command terminator options

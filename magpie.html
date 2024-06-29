@@ -6,7 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="Magpie Terminal" content="Magpie Terminal">
   <title> Magpie Terminal </title>
-  <link rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTk4IiBoZWlnaHQ9IjE1MyIgdmlld0JveD0iMCAwIDE5OCAxNTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxtYXNrIGlkPSJtYXNrMF8xODgxXzE0MzIiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjgzIiB3aWR0aD0iMTk4IiBoZWlnaHQ9IjcwIj4KPHJlY3QgeT0iODMiIHdpZHRoPSIxOTgiIGhlaWdodD0iNzAiIGZpbGw9IiNEOUQ5RDkiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzE4ODFfMTQzMikiPgo8cGF0aCBkPSJNMTk1IDY3SDEyM0wxNDQuNCAzMS42SDE5NVY2N1pNMTk1IDE0NkgxNTkuOFY4NC40SDE5NVYxNDZaTTczIDY3SDFWMzEuNkg1MS42TDczIDY3Wk0xNTQgODQuNEwxMTkgMTQ2SDc3TDQyIDg0LjRIODMuMkw5OC42IDEwNkwxMTIuOCA4NC40SDE1NFpNMzYuMiAxNDZIMVY4NC40SDM2LjJWMTQ2WiIgZmlsbD0iI0FDMzIwNSIvPgo8L2c+CjxtYXNrIGlkPSJtYXNrMV8xODgxXzE0MzIiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTgiIGhlaWdodD0iNzAiPgo8cmVjdCB3aWR0aD0iMTk4IiBoZWlnaHQ9IjcwIiBmaWxsPSIjRDlEOUQ5Ii8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV8xODgxXzE0MzIpIj4KPHBhdGggZD0iTTE5NiA2N0gxMjRMMTQ1LjQgMzEuNkgxOTZWNjdaTTE5NiAxNDZIMTYwLjhWODQuNEgxOTZWMTQ2Wk03NCA2N0gyVjMxLjZINTIuNkw3NCA2N1pNMTU1IDg0LjRMMTIwIDE0Nkg3OEw0MyA4NC40SDg0LjJMOTkuNiAxMDZMMTEzLjggODQuNEgxNTVaTTM3LjIgMTQ2SDJWODQuNEgzNy4yVjE0NloiIGZpbGw9IiMxQjhGQkEiLz4KPC9nPgo8L3N2Zz4K" />
+  <link rel="shortcut icon"
+    href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTk4IiBoZWlnaHQ9IjE1MyIgdmlld0JveD0iMCAwIDE5OCAxNTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxtYXNrIGlkPSJtYXNrMF8xODgxXzE0MzIiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjgzIiB3aWR0aD0iMTk4IiBoZWlnaHQ9IjcwIj4KPHJlY3QgeT0iODMiIHdpZHRoPSIxOTgiIGhlaWdodD0iNzAiIGZpbGw9IiNEOUQ5RDkiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzE4ODFfMTQzMikiPgo8cGF0aCBkPSJNMTk1IDY3SDEyM0wxNDQuNCAzMS42SDE5NVY2N1pNMTk1IDE0NkgxNTkuOFY4NC40SDE5NVYxNDZaTTczIDY3SDFWMzEuNkg1MS42TDczIDY3Wk0xNTQgODQuNEwxMTkgMTQ2SDc3TDQyIDg0LjRIODMuMkw5OC42IDEwNkwxMTIuOCA4NC40SDE1NFpNMzYuMiAxNDZIMVY4NC40SDM2LjJWMTQ2WiIgZmlsbD0iI0FDMzIwNSIvPgo8L2c+CjxtYXNrIGlkPSJtYXNrMV8xODgxXzE0MzIiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTgiIGhlaWdodD0iNzAiPgo8cmVjdCB3aWR0aD0iMTk4IiBoZWlnaHQ9IjcwIiBmaWxsPSIjRDlEOUQ5Ii8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV8xODgxXzE0MzIpIj4KPHBhdGggZD0iTTE5NiA2N0gxMjRMMTQ1LjQgMzEuNkgxOTZWNjdaTTE5NiAxNDZIMTYwLjhWODQuNEgxOTZWMTQ2Wk03NCA2N0gyVjMxLjZINTIuNkw3NCA2N1pNMTU1IDg0LjRMMTIwIDE0Nkg3OEw0MyA4NC40SDg0LjJMOTkuNiAxMDZMMTEzLjggODQuNEgxNTVaTTM3LjIgMTQ2SDJWODQuNEgzNy4yVjE0NloiIGZpbGw9IiMxQjhGQkEiLz4KPC9nPgo8L3N2Zz4K" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
@@ -123,30 +124,31 @@
         <option value="\r\n">\r\n</option>
       </select>
     </div>
+    <div class=" control_buttons">
+      <button id="connectSerialBtn" onclick="initialConnectAndRead()">Connect</button>
+      <button id="disableSerialBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
+    </div>
     <hr>
   </section>
 
   <section id="control"">
-      <div>
-        <h3>Commands list</h3>
-        <div class=" control_buttons">
-    <button id="connectSerialBtn" onclick="initialConnectAndRead()">Connect</button>
-    <button id="disableSerialBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
-    <!-- <button id="disableSerialBtn" onclick="emailSerialOutput()" >
-
-    </button> -->
-    <a href="mailto:" >Email Output</a>
+    <div>
+        <h3>Commands</h3>
     </div>
-    </div>
-    <hr>
-    <div class="control_buttons">
-      <input id="command" type="text" for="command">
-      <button onclick="writeData()">Send command</button>
+    <div class=" control_buttons">
+    <input id="command" type="text" for="command">
+    <button onclick="writeData()">Send command</button>
     </div>
   </section>
 
   <section id="output">
     <h3>Output</h3>
+    <div class="control_buttons">
+      <button id="" onclick="serialTableToClipboard()">Copy Output</button>
+      <a href="mailto:" id="mailto_dev">
+        <button>Email Output</button>
+      </a>
+    </div>
     <div id="serial_output">
       <table>
         <thead>
@@ -165,16 +167,32 @@
 
 
   <script type="text/javascript">
+
+    const devConfig = {
+      name: "John Example",
+      email: "example@example.com",
+      deviceName: "IMX8 Carriage Return",
+      deviceDetais: "[customisable paragraph to provide additional information to users]"
+    }
+
     let port;
     let reader;
     let writer;
     let readableStreamClosed;
     let writableStreamClosed;
+    let serialClipboard = [];
 
     let baudRate = 115200; // default
     let cmdTerminator = "\n"; // default
 
+    setDevInfo()
     checkSerialSupport()
+
+    function setDevInfo() {
+      const mailtoElement = document.getElementById('mailto_dev')
+      const mailtoDetails = `mailto:${devConfig.email}?subject=${encodeURIComponent(devConfig.deviceName)} Debug Log&body=${encodeURIComponent("Paste your table here:")}`
+      mailtoElement.href = mailtoDetails
+    }
 
     function selectBaudRate() {
       baudRate = document.getElementById("baud_rate").value
@@ -270,6 +288,7 @@
           tr.id = "commandHighlight"
         }
         tbody.appendChild(tr);
+        serialClipboard.push(`${date} \t | ${line}`)
       }
     }
 
@@ -282,6 +301,27 @@
       appendNewDataRow([command], 'write')
       cmdElement.value = ""
       writer.write(command + `${cmdTerminator}`)
+    }
+
+    function serialTableToClipboard() {
+      navigator.clipboard.writeText(serialClipboard).then(() => {
+        alert('Copied output to clipboard. Please it paste into the email.')
+      }).catch(() => {
+        alert("An error occured while trying to copy the serial table contents to the clipboard. Please try manual copy and pasting.")
+      })
+      // navigator.clipboard.
+      // mailtoElement.href = mailtoDetails
+
+      // mailtoDetails.replace(" ", "%20").replace("\n", "2%0A")
+
+      // Email address
+      // Subject
+      // NOTE: To include spaces in your subject text, separate each word with %20.
+      // Body 
+      // NOTE: To include spaces in your body text, separate each word with %20. To add a line return, enter 2%0A
+      // Copy the table
+      // Get all the email information
+      // Create a new element 
     }
 
     async function disconnectSerial() {
@@ -300,6 +340,15 @@
     body {
       margin: 40px;
       font-family: optima, sans serif;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin-top: 2rem 0;
     }
 
     /* Serial output table */
@@ -326,6 +375,37 @@
 
     .control_buttons {
       margin: 16px 0;
+    }
+
+    button {
+      background-color: #fff;
+      border-radius: 5px;
+      border: solid cadetblue 1px;
+      padding: 0.5rem;
+      transition: all;
+    }
+    button:hover {
+      background-color: cadetblue;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: rgb(240, 240, 240);
+      color: gray;
+      cursor: default;
+    }
+
+    input, select {
+      margin: 0.25rem 0;
+      background-color: #fff;
+      border-radius: 5px;
+      border: solid cadetblue 1px;
+      padding: 0.5rem;
+      transition: all;
+    }
+    input:focus{
+      border-radius: 5px;
+      border: solid cadetblue 1px;
     }
 
     table {

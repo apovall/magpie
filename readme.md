@@ -18,3 +18,6 @@ It's not an earth shattering invention, but will hopefully save you a bit of has
 - [] Tidy up code to be less verbose
 - [] Incorporate build tools to do minification step in repo.
 - [] Incorporate `devConfig` into HTML
+- [x] Add ability to email serial output to developer
+- [x] Improved basic styling
+- [] Add more styling options for end users. 

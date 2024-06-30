@@ -11,10 +11,10 @@ It's purpose is to help you, the embedded engineer, work with the not-embedded-e
 - Do a shared video call while you guide them through it.
 
 ## Further Minification
-If you need to eke out a bit more size optimisation (and don't want to compress the object), then you can copy and paste all of `mappie.html` content into a basic minifier [this one](https://www.minifier.org/), which will decrease the html file from ~13KB to ~9KB.
+If you need to eke out a bit more size optimisation (and don't want to compress the object), then you can copy and paste all of `magpie.html` content into a basic minifier [this one](https://www.minifier.org/), which will decrease the HTML file from ~13KB to ~9KB.
 
 If you want to do this:
-1. Make your desired changes on magpie.html first, as the minified code becomes considerably less readable.
+1. Make your desired changes on `magpie.html` first, as the minified code becomes considerably less readable.
 2. Copy and paste the contents into [the minifier](https://www.minifier.org/). As always be careful to not include any sensitive information.
 3. Grab the minified output
 4. Create a new HTML file, and paste the contents into it. Save.

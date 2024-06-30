@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -132,7 +131,7 @@
 
   <section id="control">
     <div>
-        <h3>Commands</h3>
+      <h3>Commands</h3>
     </div>
     <div class=" control_buttons">
     <input id="command" type="text" for="command">
@@ -157,7 +156,6 @@
           </tr>
         </thead>
         <tbody id="serial_output_tbody">
-
         </tbody>
       </table>
     </div>
@@ -267,6 +265,7 @@
 
         }
       } catch (error) {
+        disconnectSerial()
         console.log("Error: ", error)
       }
     }
@@ -319,49 +318,38 @@
       await writableStreamClosed;
       await port.close()
     }
-
   </script>
   <style>
     body {
       margin: 40px;
       font-family: optima, sans serif;
     }
-
     h1 {
       font-size: 2rem;
     }
-
     h3 {
       font-size: 1.5rem;
       margin-top: 2rem 0;
     }
-
-    /* Serial output table */
-    #serial_output_tbody>tr>td {
-      text-align: left;
-    }
-
-    #commandHighlight {
-      background-color: rgb(156, 218, 220);
-    }
-
-    #noSupport {
-      background-color: rgb(255, 215, 215);
-    }
-
-    #output {
+    #serial_output{
       max-height: 600px;
       overflow-y: scroll;
     }
-
+    #serial_output_tbody>tr>td {
+      text-align: left;
+    }
+    #commandHighlight {
+      background-color: rgb(156, 218, 220);
+    }
+    #noSupport {
+      background-color: rgb(255, 215, 215);
+    }
     #supported {
       color: #1b9b1b;
     }
-
     .control_buttons {
       margin: 16px 0;
     }
-
     button {
       background-color: #fff;
       border-radius: 5px;
@@ -369,19 +357,16 @@
       padding: 0.5rem;
       transition: all;
     }
-
     button:hover {
       background-color: cadetblue;
       color: #fff;
       cursor: pointer;
     }
-
     button:disabled {
       background: rgb(240, 240, 240);
       color: gray;
       cursor: default;
     }
-
     input,
     select {
       margin: 0.25rem 0;
@@ -391,12 +376,10 @@
       padding: 0.5rem;
       transition: all;
     }
-
     input:focus {
       border-radius: 5px;
       border: solid cadetblue 1px;
     }
-
     table {
       border-collapse: collapse;
       border: 2px solid rgb(140 140 140);
@@ -404,44 +387,35 @@
       font-size: 0.8rem;
       letter-spacing: 1px;
     }
-
     caption {
       caption-side: bottom;
       padding: 10px;
       font-weight: bold;
     }
-
     thead,
     tfoot {
       background-color: rgb(228 240 245);
     }
-
     th,
     td {
       border: 1px solid rgb(160 160 160);
       padding: 8px 10px;
     }
-
     th {
       text-align: left;
     }
-
     td {
       text-align: center;
     }
-
     tbody>tr:nth-of-type(even) {
       background-color: rgb(237 238 242);
     }
-
     tfoot th {
       text-align: right;
     }
-
     tfoot td {
       font-weight: bold;
     }
-
     /* Inline checkmark */
     .checkmark {
       display: inline-block;
@@ -453,7 +427,6 @@
       /* Chrome, Safari, Opera */
       transform: rotate(45deg);
     }
-
     .checkmark_stem {
       position: absolute;
       width: 3px;
@@ -462,7 +435,6 @@
       left: 11px;
       top: 6px;
     }
-
     .checkmark_kick {
       position: absolute;
       width: 3px;
@@ -473,5 +445,4 @@
     }
   </style>
 </body>
-
 </html>

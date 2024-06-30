@@ -1,57 +1,79 @@
-<!doctypehtml><meta charset=utf-8><meta content="IE=edge"http-equiv=X-UA-Compatible><meta content="Magpie Terminal"name="Magpie Terminal"><title>Magpie Terminal</title><link href=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTk4IiBoZWlnaHQ9IjE1MyIgdmlld0JveD0iMCAwIDE5OCAxNTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxtYXNrIGlkPSJtYXNrMF8xODgxXzE0MzIiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjgzIiB3aWR0aD0iMTk4IiBoZWlnaHQ9IjcwIj4KPHJlY3QgeT0iODMiIHdpZHRoPSIxOTgiIGhlaWdodD0iNzAiIGZpbGw9IiNEOUQ5RDkiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzE4ODFfMTQzMikiPgo8cGF0aCBkPSJNMTk1IDY3SDEyM0wxNDQuNCAzMS42SDE5NVY2N1pNMTk1IDE0NkgxNTkuOFY4NC40SDE5NVYxNDZaTTczIDY3SDFWMzEuNkg1MS42TDczIDY3Wk0xNTQgODQuNEwxMTkgMTQ2SDc3TDQyIDg0LjRIODMuMkw5OC42IDEwNkwxMTIuOCA4NC40SDE1NFpNMzYuMiAxNDZIMVY4NC40SDM2LjJWMTQ2WiIgZmlsbD0iI0FDMzIwNSIvPgo8L2c+CjxtYXNrIGlkPSJtYXNrMV8xODgxXzE0MzIiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTgiIGhlaWdodD0iNzAiPgo8cmVjdCB3aWR0aD0iMTk4IiBoZWlnaHQ9IjcwIiBmaWxsPSIjRDlEOUQ5Ii8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV8xODgxXzE0MzIpIj4KPHBhdGggZD0iTTE5NiA2N0gxMjRMMTQ1LjQgMzEuNkgxOTZWNjdaTTE5NiAxNDZIMTYwLjhWODQuNEgxOTZWMTQ2Wk03NCA2N0gyVjMxLjZINTIuNkw3NCA2N1pNMTU1IDg0LjRMMTIwIDE0Nkg3OEw0MyA4NC40SDg0LjJMOTkuNiAxMDZMMTEzLjggODQuNEgxNTVaTTM3LjIgMTQ2SDJWODQuNEgzNy4yVjE0NloiIGZpbGw9IiMxQjhGQkEiLz4KPC9nPgo8L3N2Zz4K rel="shortcut icon"><meta content="width=device-width,initial-scale=1"name=viewport><body><!--[if lt IE 7]><p class=browsehappy>You are using an<strong>outdated</strong>browser. Please<a href=#>upgrade your browser</a>to improve your experience.<![endif]--><section class=introduction><h1>[Customisable Heading]</h1><p>[customisable paragraph to provide additional information to users]<h4 id=support_availability><span class=checkmark><div class=checkmark_stem></div><div class=checkmark_kick></div></span>Serial comms support available</h4><div><h4 id=support_caption>If you received this warning, please try a supported browser:</h4><table id=support_list><caption><a href=https://developer.mozilla.org/en-US/docs/Web/API/Serial#browser_compatibility>Supported serial comms browers</a><thead><tr><th scope=col>Browser<th scope=col>Version<th scope=col>Support<tr><th>Chrome<td>89<td>Full<tr><th>Edge<td>89<td>Full<tr><th>Opera<td>75<td>Full<tr id=unsupported_browser><th>Safari<td>-<td>No<tr id=unsupported_browser><th>Firefox<td>-<td>No<tr id=unsupported_browser><th>Chrome Android<td>-<td>No<tr id=unsupported_browser><th>Firefox for Android<td>-<td>No<tr id=unsupported_browser><th>Opera Android<td>-<td>No<tr id=unsupported_browser><th>Safari on iOS<td>-<td>No<tr id=unsupported_browser><th>Samsung Internet<td>-<td>No<tr id=unsupported_browser><th>Safari on iOS<td>-<td>No</table></div><hr></section><section id=config><h3>Connection Configuration</h3><p><i>Configuration is saved on change.</i><div><label for=baud_rate>Baud Rate:</label><select id=baud_rate name=baud_rate onchange=selectBaudRate()><option value=115200>115200<option value=4800>4800<option value=9600>9600<option value=19200>19200<option value=38400>38400<option value=57600>57600<option value=230400>230400<option value=460800>460800<option value=921600>921600</select></div><div><label for=cmdTerminator>Command Terminator</label><select id=cmdTerminator name=cmdTerminator onchange=selectCmdTerminator()><option value=\n>\n<option value=\r>\r<option value=\r\n>\r\n</select></div><div class=control_buttons><button onclick=initialConnectAndRead() id=connectSerialBtn>Connect</button><button onclick=disconnectSerial() id=disableSerialBtn disabled>Disconnect</button></div><hr></section><section id=control><div><h3>Commands</h3></div><div class=control_buttons><input for=command id=command><button onclick=writeData()>Send command</button></div></section><section id=output><h3>Output</h3><div class=control_buttons><button onclick=serialTableToClipboard()>Copy Output</button><a href=mailto: id=mailto_dev><button>Email Output</button></a></div><div id=serial_output><table><thead><tr><th>Received<th>Content<tbody id=serial_output_tbody></table></div></section><script>
-const devConfig={name:"John Example",email:"example@example.com",deviceName:"IMX8 Falke V2.2",deviceDetais:"[customisable paragraph to provide additional information to users]"}
-let port;let reader;let writer;let readableStreamClosed;let writableStreamClosed;let serialClipboard=[];let baudRate=115200;let cmdTerminator="\n";setDevInfo()
-checkSerialSupport()
-addEventListener('disconnnect',()=>{disconnectSerial()})
-function setDevInfo(){const mailtoElement=document.getElementById('mailto_dev')
-const mailtoDetails=`mailto:${devConfig.email}?subject=${encodeURIComponent(devConfig.deviceName)} Debug Log&body=${encodeURIComponent("Paste your table here:")}`
-mailtoElement.href=mailtoDetails}
-function selectBaudRate(){baudRate=document.getElementById("baud_rate").value}
-function selectCmdTerminator(){cmdTerminator=document.getElementById("cmdTerminator").value
-console.log(`command terminator is ${cmdTerminator}`)}
-function checkSerialSupport(){if("serial" in navigator){document.getElementById("support_caption").innerHTML=""
-document.getElementById("support_list").innerHTML=""}else{let support_availability=document.getElementById("support_availability")
-support_availability.innerHTML="No serial comms support available"
-support_availability.style.color='#ce2929'
-document.getElementById("config").innerHTML=""
-document.getElementById("control").innerHTML=""
-document.getElementById("output").innerHTML=""}}
-async function initialConnectAndRead(){await connectToSerialPort()
-const textEncoder=new TextEncoderStream();writableStreamClosed=textEncoder.readable.pipeTo(port.writable)
-writer=textEncoder.writable.getWriter()
-const textDecoder=new TextDecoderStream()
-readableStreamClosed=port.readable.pipeTo(textDecoder.writable)
-reader=textDecoder.readable.getReader()
-document.getElementById("disableSerialBtn").disabled=!1
-document.getElementById("connectSerialBtn").disabled=!0
-await readSerial()}
-async function connectToSerialPort(){try{port=await navigator.serial.requestPort();await port.open({baudRate:baudRate,dataBits:8,parity:"none",stopBits:1});appendNewDataRow(['Connect Event'],'write')}catch(error){console.error('There was an error opening the serial port:',error)}}
-async function readSerial(){let textStream=""
-try{while(!0){const{value,done}=await reader.read()
-if(done){reader.releaseLock()
-break}
-if(value){textStream+=value;let lines=textStream.split("\n");textStream=lines.pop();appendNewDataRow(lines)}}}catch(error){console.log("Error: ",error)}}
-function appendNewDataRow(lines,appendType='read'){let tbody=document.getElementById('serial_output_tbody')
-for(let line of lines){let tr=document.createElement('tr')
-let td1=document.createElement('td')
-let td2=document.createElement('td')
-date=new Date().toLocaleTimeString("en-US",{weekday:"short",year:"numeric",month:"numeric",day:"numeric"})
-td1.textContent=date
-td2.textContent=line
-tr.appendChild(td1)
-tr.appendChild(td2)
-if(appendType=='write'){tr.id="commandHighlight"}
-tbody.appendChild(tr);serialClipboard.push(`${date} \t | ${line}`)}}
-async function writeData(manualCmd=null){const cmdElement=document.getElementById("command")
-let command=cmdElement.value
-if(command==null||command==""){return}
-appendNewDataRow([command],'write')
-cmdElement.value=""
-writer.write(command+`${cmdTerminator}`)}
-function serialTableToClipboard(){navigator.clipboard.writeText(serialClipboard).then(()=>{alert('Copied output to clipboard. Please it paste into the email.')}).catch(()=>{alert("An error occured while trying to copy the serial table contents to the clipboard. Please try manual copy and pasting.")})}
-async function disconnectSerial(){appendNewDataRow(['Disconnect Event'],'write')
-document.getElementById("connectSerialBtn").disabled=!1
-document.getElementById("disableSerialBtn").disabled=!0
-reader.cancel()
-await readableStreamClosed.catch(()=>{});writer.close()
-await writableStreamClosed;await port.close()}</script><style>body{margin:40px;font-family:optima,sans serif}h1{font-size:2rem}h3{font-size:1.5rem;margin-top:2rem 0}#serial_output_tbody>tr>td{text-align:left}#commandHighlight{background-color:#9cdadc}#unsupported_browser{background-color:#ffd7d7}#output{max-height:600px;overflow-y:scroll}#support_availability{color:#1b9b1b}.control_buttons{margin:16px 0}button{background-color:#fff;border-radius:5px;border:solid #5f9ea0 1px;padding:.5rem;transition:all}button:hover{background-color:#5f9ea0;color:#fff;cursor:pointer}button:disabled{background:#f0f0f0;color:gray;cursor:default}input,select{margin:.25rem 0;background-color:#fff;border-radius:5px;border:solid #5f9ea0 1px;padding:.5rem;transition:all}input:focus{border-radius:5px;border:solid #5f9ea0 1px}table{border-collapse:collapse;border:2px solid rgb(140 140 140);font-family:sans-serif;font-size:.8rem;letter-spacing:1px}caption{caption-side:bottom;padding:10px;font-weight:700}tfoot,thead{background-color:rgb(228 240 245)}td,th{border:1px solid rgb(160 160 160);padding:8px 10px}th{text-align:left}td{text-align:center}tbody>tr:nth-of-type(even){background-color:rgb(237 238 242)}tfoot th{text-align:right}tfoot td{font-weight:700}.checkmark{display:inline-block;width:18px;height:18px;-ms-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform:rotate(45deg)}.checkmark_stem{position:absolute;width:3px;height:9px;background-color:#1b9b1b;left:11px;top:6px}.checkmark_kick{position:absolute;width:3px;height:3px;background-color:#1b9b1b;left:8px;top:12px}</style>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Magpie Terminal</title><link rel="shortcut icon"
+  href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTk4IiBoZWlnaHQ9IjE1MyIgdmlld0JveD0iMCAwIDE5OCAxNTMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxtYXNrIGlkPSJtYXNrMF8xODgxXzE0MzIiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjgzIiB3aWR0aD0iMTk4IiBoZWlnaHQ9IjcwIj4KPHJlY3QgeT0iODMiIHdpZHRoPSIxOTgiIGhlaWdodD0iNzAiIGZpbGw9IiNEOUQ5RDkiLz4KPC9tYXNrPgo8ZyBtYXNrPSJ1cmwoI21hc2swXzE4ODFfMTQzMikiPgo8cGF0aCBkPSJNMTk1IDY3SDEyM0wxNDQuNCAzMS42SDE5NVY2N1pNMTk1IDE0NkgxNTkuOFY4NC40SDE5NVYxNDZaTTczIDY3SDFWMzEuNkg1MS42TDczIDY3Wk0xNTQgODQuNEwxMTkgMTQ2SDc3TDQyIDg0LjRIODMuMkw5OC42IDEwNkwxMTIuOCA4NC40SDE1NFpNMzYuMiAxNDZIMVY4NC40SDM2LjJWMTQ2WiIgZmlsbD0iI0FDMzIwNSIvPgo8L2c+CjxtYXNrIGlkPSJtYXNrMV8xODgxXzE0MzIiIHN0eWxlPSJtYXNrLXR5cGU6YWxwaGEiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIxOTgiIGhlaWdodD0iNzAiPgo8cmVjdCB3aWR0aD0iMTk4IiBoZWlnaHQ9IjcwIiBmaWxsPSIjRDlEOUQ5Ii8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMV8xODgxXzE0MzIpIj4KPHBhdGggZD0iTTE5NiA2N0gxMjRMMTQ1LjQgMzEuNkgxOTZWNjdaTTE5NiAxNDZIMTYwLjhWODQuNEgxOTZWMTQ2Wk03NCA2N0gyVjMxLjZINTIuNkw3NCA2N1pNMTU1IDg0LjRMMTIwIDE0Nkg3OEw0MyA4NC40SDg0LjJMOTkuNiAxMDZMMTEzLjggODQuNEgxNTVaTTM3LjIgMTQ2SDJWODQuNEgzNy4yVjE0NloiIGZpbGw9IiMxQjhGQkEiLz4KPC9nPgo8L3N2Zz4K"/><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><!--[if lt IE 7]><p class="browsehappy">You are using an<strong>outdated</strong>browser.Please<a href="#">upgrade your browser</a>to improve your experience.</p><![endif]--><section class="introduction"><h1 id="devName"></h1><p id="devDetail"></p><h4 id="supported"><span class="checkmark"><div class="checkmark_stem"></div><div class="checkmark_kick"></div></span>Serial comms support available</h4><div><h4 id="unsupported">If you received this warning,please try a supported browser:</h4><table id="browsers"><caption><a href="https://developer.mozilla.org/en-US/docs/Web/API/Serial#browser_compatibility">Supported
+  serial comms browers</a></caption><thead><tr><th scope="col">Browser</th><th scope="col">Version</th><th scope="col">Support</th></tr></thead><tbody><tr><th>Chrome</th><td>89</td><td>Full</td></tr><tr><th>Edge</th><td>89</td><td>Full</td></tr><tr><th>Opera</th><td>75</td><td>Full</td></tr><tr id="noSupport"><th>Safari</th><td>-</td><td>No</td></tr><tr id="noSupport"><th>Firefox</th><td>-</td><td>No</td></tr><tr id="noSupport"><th>Chrome Android</th><td>-</td><td>No</td></tr><tr id="noSupport"><th>Firefox for Android</th><td>-</td><td>No</td></tr><tr id="noSupport"><th>Opera Android</th><td>-</td><td>No</td></tr><tr id="noSupport"><th>Safari on iOS</th><td>-</td><td>No</td></tr><tr id="noSupport"><th>Samsung Internet</th><td>-</td><td>No</td></tr><tr id="noSupport"><th>Safari on iOS</th><td>-</td><td>No</td></tr></tbody></table></div><hr></section><section id="config"><h3>Connection Configuration</h3><p><i>Configuration is saved on change.</i></p><div><label for="baud_rate">Baud Rate:</label><select name="baud_rate" id="baud_rate" onchange="selectBaudRate()"><option value="115200">115200</option><option value="4800">4800</option><option value="9600">9600</option><option value="19200">19200</option><option value="38400">38400</option><option value="57600">57600</option><option value="230400">230400</option><option value="460800">460800</option><option value="921600">921600</option></select></div><div><label for="cmdTerminator">Command Terminator</label><select name="cmdTerminator" id="cmdTerminator" onchange="selectCmdTerminator()"><option value="\n">\n</option><option value="\r">\r</option><option value="\r\n">\r\n</option></select></div><div class=" control_buttons"><button id="connectBtn" onclick="initialConnectAndRead()">Connect</button><button id="disableBtn" onclick="disconnectSerial()" disabled>Disconnect</button></div><hr></section><section id="control"><div><h3>Commands</h3></div><div class=" control_buttons"><input id="command" type="text" for="command"><button onclick="writeData()">Send command</button></div></section><section id="output"><h3>Output</h3><div class="control_buttons"><button id="" onclick="serialTableToClipboard()">Copy Output</button><a href="mailto:" id="mailto_dev"><button>Email Output</button></a></div><div id="serial_output"><table><thead><tr><th>Received</th><th>Content</th></tr></thead><tbody id="serial_output_tbody"></tbody></table></div></section><script type="text/javascript">const devConfig={name:"<John Example>",email:"<example@example.com>",deviceName:"<Customisable Heading>",devDetail:"<customisable paragraph to provide additional information to users>"}
+  let port;let reader;let writer;let readableStreamClosed;let writableStreamClosed;let serialClipboard=[];let baudRate=115200;let cmdTerminator="\n";setDevInfo()
+  checkSerialSupport()
+  addEventListener('disconnnect',()=>{disconnectSerial()})
+  function setDevInfo(){const mailtoElement=document.getElementById('mailto_dev')
+  const mailtoDetails=`mailto:${devConfig.email}?subject=${encodeURIComponent(devConfig.deviceName)} Debug Log&body=${encodeURIComponent("Paste your table here:")}`
+  mailtoElement.href=mailtoDetails
+  document.getElementById('devName').innerText=devConfig.deviceName
+  document.getElementById('devDetail').innerText=devConfig.devDetail}
+  function selectBaudRate(){baudRate=document.getElementById("baud_rate").value}
+  function selectCmdTerminator(){cmdTerminator=document.getElementById("cmdTerminator").value}
+  function checkSerialSupport(){let emptyContents
+  if("serial" in navigator){emptyContents=['unsupported','browsers']}else{let supported=document.getElementById("supported")
+  supported.innerHTML="No serial comms support available"
+  supported.style.color='#ce2929'
+  emptyContents=["config","control","output"]}
+  emptyContents.forEach((item)=>{document.getElementById(item).innerHTML=""})}
+  async function initialConnectAndRead(){await connectToSerialPort()
+  const textEncoder=new TextEncoderStream();writableStreamClosed=textEncoder.readable.pipeTo(port.writable)
+  writer=textEncoder.writable.getWriter()
+  const textDecoder=new TextDecoderStream()
+  readableStreamClosed=port.readable.pipeTo(textDecoder.writable)
+  reader=textDecoder.readable.getReader()
+  document.getElementById("disableBtn").disabled=!1
+  document.getElementById("connectBtn").disabled=!0
+  await readSerial()}
+  async function connectToSerialPort(){try{port=await navigator.serial.requestPort();await port.open({baudRate:baudRate,dataBits:8,parity:"none",stopBits:1});appendNewDataRow(['Connect Event'],'write')}catch(error){console.error(error)}}
+  async function readSerial(){let textStream=""
+  try{while(!0){const{value,done}=await reader.read()
+  if(done){reader.releaseLock()
+  break}
+  if(value){textStream+=value;let lines=textStream.split("\n");textStream=lines.pop();appendNewDataRow(lines)}}}catch(error){console.log("Error: ",error)}}
+  function appendNewDataRow(lines,appendType='read'){let tbody=document.getElementById('serial_output_tbody')
+  for(let line of lines){let tr=document.createElement('tr')
+  let td1=document.createElement('td')
+  let td2=document.createElement('td')
+  date=new Date().toLocaleTimeString("en-US",{weekday:"short",year:"numeric",month:"numeric",day:"numeric"})
+  td1.textContent=date
+  td2.textContent=line
+  tr.appendChild(td1)
+  tr.appendChild(td2)
+  if(appendType=='write'){tr.id="commandHighlight"}
+  tbody.appendChild(tr);serialClipboard.push(`${date} \t | ${line} \n`)}}
+  async function writeData(manualCmd=null){const cmdElement=document.getElementById("command")
+  let command=cmdElement.value
+  if(command==null||command==""){return}
+  appendNewDataRow([command],'write')
+  cmdElement.value=""
+  writer.write(command+`${cmdTerminator}`)}
+  function serialTableToClipboard(){navigator.clipboard.writeText(serialClipboard).then(()=>{alert('Copied output to clipboard. Please it paste into the email.')}).catch(()=>{alert("An error occured while trying to copy the serial table contents to the clipboard. Please try manual copy and pasting.")})}
+  async function disconnectSerial(){appendNewDataRow(['Disconnect Event'],'write')
+  document.getElementById("connectBtn").disabled=!1
+  document.getElementById("disableBtn").disabled=!0
+  reader.cancel()
+  await readableStreamClosed.catch(()=>{});writer.close()
+  await writableStreamClosed;await port.close()}</script><style>body{margin:40px;font-family:optima,sans serif}
+  h1{font-size:2rem}
+  h3{font-size:1.5rem;margin-top:2rem 0}
+  #serial_output_tbody>tr>td{text-align:left}
+  #commandHighlight{background-color:rgb(156,218,220)}
+  #noSupport{background-color:rgb(255,215,215)}
+  #output{max-height:600px;overflow-y:scroll}
+  #supported{color:#1b9b1b}.control_buttons{margin:16px 0}
+  button{background-color:#fff;border-radius:5px;border:solid cadetblue 1px;padding:0.5rem;transition:all}
+  button:hover{background-color:cadetblue;color:#fff;cursor:pointer}
+  button:disabled{background:rgb(240,240,240);color:gray;cursor:default}
+  input,select{margin:0.25rem 0;background-color:#fff;border-radius:5px;border:solid cadetblue 1px;padding:0.5rem;transition:all}
+  input:focus{border-radius:5px;border:solid cadetblue 1px}
+  table{border-collapse:collapse;border:2px solid rgb(140 140 140);font-family:sans-serif;font-size:0.8rem;letter-spacing:1px}
+  caption{caption-side:bottom;padding:10px;font-weight:bold}
+  thead,tfoot{background-color:rgb(228 240 245)}
+  th,td{border:1px solid rgb(160 160 160);padding:8px 10px}
+  th{text-align:left}
+  td{text-align:center}
+  tbody>tr:nth-of-type(even){background-color:rgb(237 238 242)}
+  tfoot th{text-align:right}
+  tfoot td{font-weight:bold}.checkmark{display:inline-block;width:18px;height:18px;-ms-transform:rotate(45deg);-webkit-transform:rotate(45deg);transform:rotate(45deg)}.checkmark_stem{position:absolute;width:3px;height:9px;background-color:#1b9b1b;left:11px;top:6px}.checkmark_kick{position:absolute;width:3px;height:3px;background-color:#1b9b1b;left:8px;top:12px}</style></body></html>

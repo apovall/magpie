@@ -10,7 +10,7 @@ Magpie allows users to:
 It's not an earth shattering invention, but will hopefully save you a bit of hassle with troubleshooting end user problems.
 
 # Resources
-- [Manual basic minifier](https://www.minifier.org/html-minifier)
+- [Manual basic minifier](https://www.minifier.org/)
 
 ## TODO:
 - [] Incorporate `devConfig` into HTML

@@ -21,10 +21,10 @@ If you want to do this:
 If you are going down the compression route, there's little benefit to the minification step, as they both compress to ~4KB. 
 
 ## TODO:
-- [] Incorporate build tools to do minification step in repo.
-  - [] Look at better minifiers, such as [minify-html](https://github.com/wilsonzlin/minify-html)
-- [] Add more styling options for end users. 
-- [] ~~Use flexbox for baud rate and command terminator options~~ (opting not to, to prioritise file size minimisation)
+- [ ] Incorporate build tools to do minification step in repo.
+  - [ ] Look at better minifiers, such as [minify-html](https://github.com/wilsonzlin/minify-html)
+- [ ] Add more styling options for end users. 
+- [ ] ~~Use flexbox for baud rate and command terminator options~~ (opting not to, to prioritise file size minimisation)
 - [x] Incorporate `devConfig` into HTML
 - [x] Make only output table overflow, not entire container
 - [x] Tidy up code to be less verbose

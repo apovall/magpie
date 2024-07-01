@@ -8,7 +8,6 @@ It's purpose is to help you, the embedded engineer, work with the not-embedded-e
 - Allow for basic configuration of the page via the `devConfig` object
 - HTML file can live in simple storage on your device
 - Easy copy and paste the serial comms data table into an email (email address configurable in the `devConfig` object)
-- Do a shared video call while you guide them through it.
 
 ## Further Minification
 If you need to eke out a bit more size optimisation (and don't want to compress the object), then you can copy and paste all of `magpie.html` content into a basic minifier [this one](https://www.minifier.org/), which will decrease the HTML file from ~13KB to ~9KB.

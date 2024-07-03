@@ -32,3 +32,12 @@ If you are going down the compression route, there's little benefit to the minif
 - [x] Remove read and write lock feedback.
 - [x] Improved basic styling
 - [x] Add ability to email serial output to developer
+- Make landing page for Magpie
+- Make online UI that allows users to 
+  - Upload assets to incorporate
+    - Favicon + links to favicon creator
+    - Heading
+    - Customisable paragraph
+    - Support links?
+  - Have a bunch of brand centric themes options. Basic option is free. 
+  - Have it all nicely integrated that spits out the files they need

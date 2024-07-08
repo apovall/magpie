@@ -148,7 +148,7 @@
       </a>
     </div>
     <div id="serial_output">
-      <table>
+      <table id="serial_table">
         <thead>
           <tr>
             <th>Received</th>
@@ -175,7 +175,6 @@
     let writer;
     let readableStreamClosed;
     let writableStreamClosed;
-    let serialClipboard = [];
 
     let baudRate = 115200; 
     let cmdTerminator = "\n";
@@ -285,7 +284,6 @@
           tr.id = "commandHighlight"
         }
         tbody.appendChild(tr);
-        serialClipboard.push(`${date} \t | ${line} \n`)
       }
     }
 
@@ -301,11 +299,14 @@
     }
 
     function serialTableToClipboard() {
-      navigator.clipboard.writeText(serialClipboard).then(() => {
-        alert('Copied output to clipboard. Please it paste into the email.')
-      }).catch(() => {
-        alert("An error occured while trying to copy the serial table contents to the clipboard. Please try manual copy and pasting.")
-      })
+      let selection = window.getSelection()
+      let table = document.getElementById('serial_table')
+      let range = document.createRange()
+      range.selectNode(table)
+      selection.removeAllRanges()
+      selection.addRange(range)
+      document.execCommand('copy')
+      alert('Copied output to clipboard. Please it paste into the email.')
     }
 
     async function disconnectSerial() {

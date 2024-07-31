@@ -9,6 +9,24 @@ It's purpose is to help you, the embedded engineer, work with the not-embedded-e
 - HTML file can live in simple storage on your device
 - Easy copy and paste the serial comms data table into an email (email address configurable in the `devConfig` object)
 
+## Customisation
+- Search for the first instance of the `devConfig` object in the `magpie.html`, and add or leave as blank strings the fields you don't want to populate (not everyone likes having their emails exposed to all clients, although an email alias might be handy. Your call)
+- Customisable fields include:
+
+``
+const devConfig = {
+
+  name: "<John Example>",
+
+  email: "<example@example.com>",
+
+  deviceName: "<Customisable Heading>",
+
+  devDetail: "<customisable paragraph to provide additional information to users>"
+
+}
+``
+
 ## Further Minification
 If you need to eke out a bit more size optimisation (and don't want to compress the object), then you can copy and paste all of `magpie.html` content into a basic minifier [this one](https://www.minifier.org/), which will decrease the HTML file from ~13KB to ~9KB.
 

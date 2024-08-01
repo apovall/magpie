@@ -10,22 +10,20 @@ It's purpose is to help you, the embedded engineer, work with the not-embedded-e
 - Easy copy and paste the serial comms data table into an email (email address configurable in the `devConfig` object)
 
 ## Customisation
-- Search for the first instance of the `devConfig` object in the `magpie.html`, and add or leave as blank strings the fields you don't want to populate (not everyone likes having their emails exposed to all clients, although an email alias might be handy. Your call)
+- Search for the first instance of the `devConfig` object in the `magpie.html`, and add or leave as blank strings the fields you don't want to populate.
+  - Not everyone likes having their emails exposed to all clients, although an email alias might be handy. Your call.
 - Customisable fields include:
 
-``
-const devConfig = {
+```
+    name: "<John Example>",
+    email: "<example@example.com>",
+    deviceName: "<Customisable Heading>",
+    devDetail: "<customisable paragraph to provide additional information to users>"
+```
 
-  name: "<John Example>",
-
-  email: "<example@example.com>",
-
-  deviceName: "<Customisable Heading>",
-
-  devDetail: "<customisable paragraph to provide additional information to users>"
-
-}
-``
+## Use Cases
+- If you have onboard non-volatile storage, then make a copy of `mapgie.html` (maybe rename the file name) and drop it on there. Ship it with every unit, so it's just ready to go when you need.
+- If you don't want to ship it with every unit then just email it to users and get them to run it locally.
 
 ## Further Minification
 If you need to eke out a bit more size optimisation (and don't want to compress the object), then you can copy and paste all of `magpie.html` content into a basic minifier [this one](https://www.minifier.org/), which will decrease the HTML file from ~13KB to ~9KB.
@@ -50,12 +48,3 @@ If you are going down the compression route, there's little benefit to the minif
 - [x] Remove read and write lock feedback.
 - [x] Improved basic styling
 - [x] Add ability to email serial output to developer
-- Make landing page for Magpie
-- Make online UI that allows users to 
-  - Upload assets to incorporate
-    - Favicon + links to favicon creator
-    - Heading
-    - Customisable paragraph
-    - Support links?
-  - Have a bunch of brand centric themes options. Basic option is free. 
-  - Have it all nicely integrated that spits out the files they need

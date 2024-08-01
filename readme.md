@@ -17,17 +17,17 @@ It's purpose is to help you, the embedded engineer, work with the not-embedded-e
 ## How to use
 1. Just drop `mapgie.html` onto a local PC that has physical access to the device you want to access.
 2. Open the HTML file
-  - If you are running an unsupported browser (basically anything other than Chrome, Edge and Opera), you'll get a warning message
-    - If that happens, get the end user to just copy the file path (in the address bar) and paste into an appropriate browser.
-  - If you are running Chrome, Edge or Opera, you'll see some device / developer details (see Customisation below)
+    - If you are running an unsupported browser (basically anything other than Chrome, Edge and Opera), you'll get a warning message
+      - If that happens, get the end user to just copy the file path (in the address bar) and paste into an appropriate browser.
+    - If you are running Chrome, Edge or Opera, you'll see some device / developer details (see Customisation below)
 3. Select your baud rate and command terminator
 4. Click Connect
-  - If your device dumps any comms onto the bus on power, but before connecting to it, you obviously won't see those.  
+   device dumps any comms onto the bus on power, but before connecting to it, you obviously won't see those.  
 5. You can send any commands to the device via the 'Send Command' field and button. 
-  - Commands are are automatically terminated with your chosen terminator above (this does largely assume that you consistently use the same for both reads and writes)
+    - Commands are are automatically terminated with your chosen terminator above (this does largely assume that you consistently use the same for both reads and writes)
 6. You can copy the output table via the 'Copy Output' button
 7. Clicking the 'Email output' button will open the user's email client, and allow them to paste in the copied table output into the email.
-  - If you nominated an email address in `devConfig`, this will be automatically populated for you in the `to` field.
+    - If you nominated an email address in `devConfig`, this will be automatically populated for you in the `to` field.
 
 
 ## Customisation

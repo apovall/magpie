@@ -153,6 +153,13 @@
 
   <section id="output">
     <h3>Output</h3>
+    <div id="signal_status" class="signal_status" style="display:none;">
+      <span class="signal_label">Signals:</span>
+      <span id="sig_cts" class="signal_indicator">CTS</span>
+      <span id="sig_dsr" class="signal_indicator">DSR</span>
+      <span id="sig_dcd" class="signal_indicator">DCD</span>
+      <span id="sig_ri" class="signal_indicator">RI</span>
+    </div>
     <div class="control_buttons">
       <button id="" onclick="serialTableToClipboard()">Copy Output</button>
       <a href="mailto:" id="mailto_dev">
@@ -194,7 +201,9 @@
     let dtr = false;
     let rts = false;
     let cts = false;
-    let dsr = false
+    let dsr = false;
+
+    let signalPollInterval = null;
 
 
     setDevInfo()
@@ -231,6 +240,44 @@
       if (port && port.readable) {
         await port.setSignals({ requestToSend: rts })
       }
+    }
+
+    async function pollSignals() {
+      if (!port || !port.readable) return
+      try {
+        const signals = await port.getSignals()
+        updateSignalIndicator('sig_cts', signals.clearToSend)
+        updateSignalIndicator('sig_dsr', signals.dataSetReady)
+        updateSignalIndicator('sig_dcd', signals.dataCarrierDetect)
+        updateSignalIndicator('sig_ri', signals.ringIndicator)
+      } catch (e) {
+        console.error('Failed to read signals:', e)
+      }
+    }
+
+    function updateSignalIndicator(id, active) {
+      const el = document.getElementById(id)
+      if (active) {
+        el.classList.add('signal_active')
+        el.classList.remove('signal_inactive')
+      } else {
+        el.classList.add('signal_inactive')
+        el.classList.remove('signal_active')
+      }
+    }
+
+    function startSignalPolling() {
+      document.getElementById('signal_status').style.display = ''
+      pollSignals()
+      signalPollInterval = setInterval(pollSignals, 500)
+    }
+
+    function stopSignalPolling() {
+      if (signalPollInterval) {
+        clearInterval(signalPollInterval)
+        signalPollInterval = null
+      }
+      document.getElementById('signal_status').style.display = 'none'
     }
 
     function checkSerialSupport() {
@@ -270,6 +317,7 @@
         port = await navigator.serial.requestPort();
         await port.open({ baudRate: baudRate, dataBits: 8, parity: "none", stopBits: 1 });
         await port.setSignals({ dataTerminalReady: dtr, requestToSend: rts });
+        startSignalPolling()
         appendNewDataRow(['Connect Event'], 'write')
 
       } catch (error) {
@@ -343,6 +391,7 @@
     }
 
     async function disconnectSerial() {
+      stopSignalPolling()
       appendNewDataRow(['Disconnect Event'], 'write')
       document.getElementById("connectBtn").disabled = false
       document.getElementById("disableBtn").disabled = true
@@ -413,6 +462,35 @@
     input[type="checkbox"] {
       margin-right: 0.5rem;
       vertical-align: middle;
+    }
+    .signal_status {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+    .signal_label {
+      font-weight: bold;
+      margin-right: 0.25rem;
+    }
+    .signal_indicator {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      font-family: monospace;
+      border: 1px solid #ccc;
+    }
+    .signal_active {
+      background-color: #1b9b1b;
+      color: #fff;
+      border-color: #1b9b1b;
+    }
+    .signal_inactive {
+      background-color: rgb(240, 240, 240);
+      color: #999;
+      border-color: #ccc;
     }
     input:focus {
       border-radius: 5px;

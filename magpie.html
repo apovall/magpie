@@ -122,6 +122,18 @@
         <option value="\r\n">\r\n</option>
       </select>
     </div>
+    <div>
+      <label>
+        <input type="checkbox" id="dtr" onchange="toggleDTR()">
+        DTR (Data Terminal Ready)
+      </label>
+    </div>
+    <div>
+      <label>
+        <input type="checkbox" id="rts" onchange="toggleRTS()">
+        RTS (Request To Send)
+      </label>
+    </div>
     <div class=" control_buttons">
       <button id="connectBtn" onclick="initialConnectAndRead()">Connect</button>
       <button id="disableBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
@@ -179,6 +191,12 @@
     let baudRate = 115200; 
     let cmdTerminator = "\n";
 
+    let dtr = false;
+    let rts = false;
+    let cts = false;
+    let dsr = false
+
+
     setDevInfo()
     checkSerialSupport()
     addEventListener('disconnnect', () => {
@@ -199,6 +217,20 @@
 
     function selectCmdTerminator() {
       cmdTerminator = document.getElementById("cmdTerminator").value
+    }
+
+    async function toggleDTR() {
+      dtr = document.getElementById("dtr").checked
+      if (port && port.readable) {
+        await port.setSignals({ dataTerminalReady: dtr })
+      }
+    }
+
+    async function toggleRTS() {
+      rts = document.getElementById("rts").checked
+      if (port && port.readable) {
+        await port.setSignals({ requestToSend: rts })
+      }
     }
 
     function checkSerialSupport() {
@@ -237,6 +269,7 @@
       try {
         port = await navigator.serial.requestPort();
         await port.open({ baudRate: baudRate, dataBits: 8, parity: "none", stopBits: 1 });
+        await port.setSignals({ dataTerminalReady: dtr, requestToSend: rts });
         appendNewDataRow(['Connect Event'], 'write')
 
       } catch (error) {
@@ -376,6 +409,10 @@
       border: solid cadetblue 1px;
       padding: 0.5rem;
       transition: all;
+    }
+    input[type="checkbox"] {
+      margin-right: 0.5rem;
+      vertical-align: middle;
     }
     input:focus {
       border-radius: 5px;

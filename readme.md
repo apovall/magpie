@@ -2,6 +2,10 @@
 Magpie is a single file, all-in-one serial comms *inspector* and basic interrogator.
 It's purpose is to help you, the embedded engineer, work with the not-embedded-engineer, to help trouble shoot devices that that your customers have access to, but you do not. Magpie is intended to help them connect a device to serial comms in a clean and simple way, so you can get some debugging information out of it.
 
+## Requirements
+- Bash / GitBash to run the build script
+- Chrome 
+
 ## Features
 - Single HTML file that includes all styling and JS necessary to use the Web Serial API
 - Is reasonably small (13KB uncompressed, 10KB minified, 4KB compressed)
@@ -59,6 +63,9 @@ If you are going down the compression route, there's little benefit to the minif
 - [ ] Incorporate build tools to do minification step in repo.
   - [ ] Look at better minifiers, such as [minify-html](https://github.com/wilsonzlin/minify-html)
 - [ ] Add more styling options for end users. 
+- [ ] Add optiont for page to scroll to bottom on new serial outpput
+- [ ] Create build script to 
+- [ ] Swap output and common segments. Have to keep scrolling to the bottom of the page and back up to see the output of a command.
 - [ ] ~~Use flexbox for baud rate and command terminator options~~ (opting not to, to prioritise file size minimisation)
 - [x] Incorporate `devConfig` into HTML
 - [x] Make only output table overflow, not entire container

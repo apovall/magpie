@@ -1,0 +1,20 @@
+[
+  {
+    "default": {
+      "name": "",
+      "email": "",
+      "deviceName": "Ubermensch Device",
+      "devDetail": "Ubermensch Device requires no oversight and will work tirelessly to transcend mortal limitations.",
+      "baudRate": "115200"
+    }
+  },
+  {
+    "Project_n": {
+      "name": "Project N Developer",
+      "email": "ProjectN@projection.com",
+      "deviceName": "An example device",
+      "devDetail": "A lesser device, bounded by mortal means.",
+      "baudRate": "115200"
+    }
+  }
+]

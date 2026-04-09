@@ -146,7 +146,7 @@
       <h3>Commands</h3>
     </div>
     <div class=" control_buttons">
-    <input id="command" type="text" for="command">
+    <input id="command" type="text" for="command" onkeydown="if(event.key==='Enter')writeData()">
     <button onclick="writeData()">Send command</button>
     </div>
   </section>
@@ -405,7 +405,7 @@
   <style>
     body {
       margin: 40px;
-      font-family: optima, sans serif;
+      font-family: monospace, sans-serif;
     }
     h1 {
       font-size: 2rem;

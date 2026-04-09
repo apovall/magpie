@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -134,6 +135,12 @@
         RTS (Request To Send)
       </label>
     </div>
+    <div>
+      <label>
+        <input type="checkbox" id="showReceived" onchange="toggleReceivedColumn()" checked>
+        Show Received Timestamp
+      </label>
+    </div>
     <div class=" control_buttons">
       <button id="connectBtn" onclick="initialConnectAndRead()">Connect</button>
       <button id="disableBtn" onclick="disconnectSerial()" disabled>Disconnect</button>
@@ -145,10 +152,7 @@
     <div>
       <h3>Commands</h3>
     </div>
-    <div class=" control_buttons">
-    <input id="command" type="text" for="command" onkeydown="if(event.key==='Enter')writeData()">
-    <button onclick="writeData()">Send command</button>
-    </div>
+
   </section>
 
   <section id="output">
@@ -176,7 +180,12 @@
         </thead>
         <tbody id="serial_output_tbody">
         </tbody>
+
       </table>
+      <div class="console_input">
+        <button onclick="writeData()" id="sendBtn">Send</button>
+        <input id="command" type="text" for="command" onkeydown="if(event.key==='Enter')writeData()">
+      </div>
     </div>
   </section>
 
@@ -195,7 +204,7 @@
     let readableStreamClosed;
     let writableStreamClosed;
 
-    let baudRate = 115200; 
+    let baudRate = 115200;
     let cmdTerminator = "\n";
 
     let dtr = false;
@@ -218,6 +227,14 @@
       mailtoElement.href = mailtoDetails
       document.getElementById('devName').innerText = devConfig.deviceName
       document.getElementById('devDetail').innerText = devConfig.devDetail
+    }
+
+    function toggleReceivedColumn() {
+      const show = document.getElementById('showReceived').checked
+      const display = show ? '' : 'none'
+      document.querySelectorAll('#serial_table th:first-child, #serial_table td:first-child').forEach(el => {
+        el.style.display = display
+      })
     }
 
     function selectBaudRate() {
@@ -318,7 +335,7 @@
         await port.open({ baudRate: baudRate, dataBits: 8, parity: "none", stopBits: 1 });
         await port.setSignals({ dataTerminalReady: dtr, requestToSend: rts });
         startSignalPolling()
-        appendNewDataRow(['Connect Event'], 'write')
+        appendNewDataRow(['Connect Event'], 'write', true)
 
       } catch (error) {
         console.error(error);
@@ -350,22 +367,28 @@
       }
     }
 
-    function appendNewDataRow(lines, appendType = 'read') {
+    function appendNewDataRow(lines, appendType = 'read', isConnectionEvent = false) {
       let tbody = document.getElementById('serial_output_tbody')
       for (let line of lines) {
         let tr = document.createElement('tr')
         let td1 = document.createElement('td')
         let td2 = document.createElement('td')
-        date = new Date().toLocaleTimeString("en-US", { weekday: "short", year: "numeric", month: "numeric", day: "numeric" })
+        const now = new Date()
+        date = now.toLocaleTimeString("en-GB", { hour12: false }) + "." + String(now.getMilliseconds()).padStart(3, '0')
+        // date = now.toLocaleDateString("en-GB") + " - " + now.toLocaleTimeString("en-GB", { hour12: false }) + "." + String(now.getMilliseconds()).padStart(3, '0')
         td1.textContent = date
         td2.textContent = line
         tr.appendChild(td1)
         tr.appendChild(td2)
-        if (appendType == 'write') {
+        if (isConnectionEvent) {
+          tr.id = "connectionEvent"
+        } else if (appendType == 'write') {
           tr.id = "commandHighlight"
         }
         tbody.appendChild(tr);
       }
+      const outputDiv = document.getElementById('serial_output')
+      outputDiv.scrollTop = outputDiv.scrollHeight
     }
 
     async function writeData(manualCmd = null) {
@@ -392,11 +415,11 @@
 
     async function disconnectSerial() {
       stopSignalPolling()
-      appendNewDataRow(['Disconnect Event'], 'write')
+      appendNewDataRow(['Disconnect Event'], 'write', true)
       document.getElementById("connectBtn").disabled = false
       document.getElementById("disableBtn").disabled = true
       reader.cancel()
-      await readableStreamClosed.catch(() => {});
+      await readableStreamClosed.catch(() => { });
       writer.close()
       await writableStreamClosed;
       await port.close()
@@ -405,34 +428,59 @@
   <style>
     body {
       margin: 40px;
-      font-family: monospace, sans-serif;
+      font-family: optima, sans-serif;
     }
+
     h1 {
       font-size: 2rem;
     }
+
     h3 {
       font-size: 1.5rem;
       margin-top: 2rem 0;
     }
-    #serial_output{
+
+    #serial_output {
       max-height: 600px;
       overflow-y: scroll;
     }
+
     #serial_output_tbody>tr>td {
       text-align: left;
     }
+
+    #command {
+      width: 80%
+    }
+
     #commandHighlight {
       background-color: rgb(156, 218, 220);
     }
+
+    #connectionEvent {
+      background-color: rgb(255, 215, 215);
+    }
+
     #noSupport {
       background-color: rgb(255, 215, 215);
     }
+
     #supported {
       color: #1b9b1b;
     }
+
+    .console_input,
     .control_buttons {
       margin: 16px 0;
+      width: 100%;
     }
+
+    .console_input {
+      background-color: rgb(245 245 245);
+      padding: 16px 0 16px 0 ;
+      
+    }
+
     button {
       background-color: #fff;
       border-radius: 5px;
@@ -440,39 +488,55 @@
       padding: 0.5rem;
       transition: all;
     }
+
     button:hover {
       background-color: cadetblue;
       color: #fff;
       cursor: pointer;
     }
+
     button:disabled {
       background: rgb(240, 240, 240);
       color: gray;
       cursor: default;
     }
+
     input,
     select {
       margin: 0.25rem 0;
       background-color: #fff;
       border-radius: 5px;
-      border: solid cadetblue 1px;
       padding: 0.5rem;
       transition: all;
     }
+
+    select {
+      border: solid cadetblue 1px;
+    }
+
+    input {
+      border: none;
+      border-bottom: #ccc solid 1px;
+      border-radius: 0;
+    }
+
     input[type="checkbox"] {
       margin-right: 0.5rem;
       vertical-align: middle;
     }
+
     .signal_status {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       margin: 0.5rem 0;
     }
+
     .signal_label {
       font-weight: bold;
       margin-right: 0.25rem;
     }
+
     .signal_indicator {
       display: inline-block;
       padding: 0.25rem 0.5rem;
@@ -482,56 +546,89 @@
       font-family: monospace;
       border: 1px solid #ccc;
     }
+
     .signal_active {
       background-color: #1b9b1b;
       color: #fff;
       border-color: #1b9b1b;
     }
+
     .signal_inactive {
       background-color: rgb(240, 240, 240);
       color: #999;
       border-color: #ccc;
     }
+
     input:focus {
       border-radius: 5px;
       border: solid cadetblue 1px;
     }
+
     table {
+      width: 100%;
       border-collapse: collapse;
-      border: 2px solid rgb(140 140 140);
+      border: none;
       font-family: sans-serif;
       font-size: 0.8rem;
       letter-spacing: 1px;
+
     }
+
+    #serial_table {
+      background-color: rgb(245 245 245);
+      font-family: monospace;
+    }
+
     caption {
       caption-side: bottom;
       padding: 10px;
       font-weight: bold;
     }
-    thead,
+
     tfoot {
       background-color: rgb(228 240 245);
     }
+
     th,
     td {
-      border: 1px solid rgb(160 160 160);
+      border: none;
       padding: 8px 10px;
     }
+
+    th:first-child,
+    td:first-child {
+      width: 20%;
+      border-right: 1px solid rgb(160 160 160);
+      color: #747474;
+    }
+
+    th:last-child,
+    td:last-child {
+      width: 80%;
+      border-left: 1px solid rgb(160 160 160);
+      color: #323232;
+    }
+
     th {
       text-align: left;
     }
+
     td {
-      text-align: center;
+      text-align: left;
     }
-    tbody>tr:nth-of-type(even) {
+
+    /* tbody>tr:nth-of-type(even) {
       background-color: rgb(237 238 242);
-    }
+    } */
+
     tfoot th {
       text-align: right;
     }
+
     tfoot td {
       font-weight: bold;
     }
+
     /* Inline checkmark */
     .checkmark {
       display: inline-block;
@@ -543,6 +640,7 @@
       /* Chrome, Safari, Opera */
       transform: rotate(45deg);
     }
+
     .checkmark_stem {
       position: absolute;
       width: 3px;
@@ -551,6 +649,7 @@
       left: 11px;
       top: 6px;
     }
+
     .checkmark_kick {
       position: absolute;
       width: 3px;
@@ -561,4 +660,5 @@
     }
   </style>
 </body>
+
 </html>

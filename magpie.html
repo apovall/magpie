@@ -157,12 +157,6 @@
       <span id="sig_dcd" class="signal_indicator">DCD</span>
       <span id="sig_ri" class="signal_indicator">RI</span>
     </div>
-    <div class="control_buttons">
-      <button id="" onclick="serialTableToClipboard()">Copy Output</button>
-      <a href="mailto:" id="mailto_dev">
-        <button>Email Output</button>
-      </a>
-    </div>
     <div id="serial_output">
       <table id="serial_table">
         <thead>
@@ -178,6 +172,12 @@
       <div class="console_input">
         <button onclick="writeData()" id="sendBtn">Send</button>
         <input id="command" type="text" for="command" onkeydown="if(event.key==='Enter')writeData()">
+      </div>
+      <div class="control_buttons">
+        <button id="" onclick="serialTableToClipboard()">Copy Output</button>
+        <a href="mailto:" id="mailto_dev">
+          <button>Email Output</button>
+        </a>
       </div>
     </div>
   </section>
@@ -214,7 +214,7 @@
     addEventListener('disconnect', () => {
       disconnectSerial()
     })
-    
+
 
     function setDevInfo() {
       const mailtoElement = document.getElementById('mailto_dev')
@@ -224,12 +224,12 @@
       document.getElementById('devDetail').innerText = devConfig.devDetail
     }
 
-    function setIsConnected(newState){
+    function setIsConnected(newState) {
       isConnected = newState === undefined ? true : newState
       document.getElementById('baud_rate').disabled = isConnected
       document.getElementById('cmdTerminator').disabled = isConnected
-      document.getElementById('dtr').disabled = !isConnected
-      document.getElementById('rts').disabled = !isConnected
+      document.getElementById('dtr').disabled = isConnected
+      document.getElementById('rts').disabled = isConnected
     }
 
     function toggleReceivedColumn() {
@@ -431,6 +431,7 @@
       setIsConnected(false)
     }
   </script>
+
   <style>
     body {
       margin: 40px;
@@ -483,8 +484,8 @@
 
     .console_input {
       background-color: rgb(245 245 245);
-      padding: 16px 0 16px 0 ;
-      
+      padding: 16px 0 16px 0;
+
     }
 
     button {
@@ -603,14 +604,14 @@
 
     th:first-child,
     td:first-child {
-      width: 20%;
+      width: 140px;
       border-right: 1px solid rgb(160 160 160);
       color: #747474;
     }
 
     th:last-child,
     td:last-child {
-      width: 80%;
+      /* width: 80%; */
       border-left: 1px solid rgb(160 160 160);
       color: #323232;
     }

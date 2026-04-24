@@ -148,13 +148,6 @@
     <hr>
   </section>
 
-  <section id="control">
-    <div>
-      <h3>Commands</h3>
-    </div>
-
-  </section>
-
   <section id="output">
     <h3>Output</h3>
     <div id="signal_status" class="signal_status" style="display:none;">
@@ -214,12 +207,14 @@
 
     let signalPollInterval = null;
 
+    let isConnected = false
 
     setDevInfo()
     checkSerialSupport()
-    addEventListener('disconnnect', () => {
+    addEventListener('disconnect', () => {
       disconnectSerial()
     })
+    
 
     function setDevInfo() {
       const mailtoElement = document.getElementById('mailto_dev')
@@ -227,6 +222,14 @@
       mailtoElement.href = mailtoDetails
       document.getElementById('devName').innerText = devConfig.deviceName
       document.getElementById('devDetail').innerText = devConfig.devDetail
+    }
+
+    function setIsConnected(newState){
+      isConnected = newState === undefined ? true : newState
+      document.getElementById('baud_rate').disabled = isConnected
+      document.getElementById('cmdTerminator').disabled = isConnected
+      document.getElementById('dtr').disabled = !isConnected
+      document.getElementById('rts').disabled = !isConnected
     }
 
     function toggleReceivedColumn() {
@@ -336,9 +339,11 @@
         await port.setSignals({ dataTerminalReady: dtr, requestToSend: rts });
         startSignalPolling()
         appendNewDataRow(['Connect Event'], 'write', true)
+        setIsConnected(true)
 
       } catch (error) {
         console.error(error);
+        setIsConnected(false)
       }
     }
 
@@ -423,6 +428,7 @@
       writer.close()
       await writableStreamClosed;
       await port.close()
+      setIsConnected(false)
     }
   </script>
   <style>
